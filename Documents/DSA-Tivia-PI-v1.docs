@@ -1,0 +1,290 @@
+
+==========================================================================================================
+                                        PROJECT IDEA
+                        Data Structures and Algorithm Design (DSA) Course
+==========================================================================================================
+
+PROJECT TITLE
+-------------
+DSA Trivia Challenge: A Multiplayer Quiz Game with Advanced Data Structures
+
+COURSE INFORMATION
+------------------
+Course Name     : Data Structures and Algorithm Design
+Course Code     : CSE 0613-2107
+Supervised By   : Tanzila Akter Pushpu
+Semester        : Fall 2026
+Group Number    : 05
+
+GROUP 05 MEMBERS
+----------------
++--------------------------------------------------------------------------------------------------------+
+| No | Name                    | Reg No.  | Role                                                         |
++----+-------------------------+----------+--------------------------------------------------------------+
+| 1. | Ashraful Islam          | 25201000 | Team Lead & Design & Implementation & File I/O & Persistence |
+| 3. | Sabrina Sultana Somaya  | 2520899  | Documentation                                                |
+| 2. | Fahim Ashraf Alvi       | 2520926  | Testing                                                      |
+| 4. | [Member 4]              | [Reg No] | Nothing                                                      |
++--------------------------------------------------------------------------------------------------------+
+
+DATE OF SUBMISSION
+------------------
+16 AUGUST 2026
+
+==========================================================================================================
+                        1. PROJECT OVERVIEW
+==========================================================================================================
+
+1.1 Abstract
+------------
+DSA Trivia Challenge is a console-based multiplayer quiz application developed
+entirely in ANSI C (C11 standard). The project demonstrates the practical
+application of fundamental and advanced data structures in a real-world scenario:
+player authentication, dynamic question management, ordered data storage, and
+competition ranking. Unlike simple array-based implementations, this project
+uses pointer-based dynamic memory allocation, recursive algorithms, and
+multi-structure data architecture to solve genuine computational problems.
+
+1.2 Problem Statement
+---------------------
+Traditional quiz applications often rely on simple arrays for data storage,
+resulting in:
+  - O(n) linear search for player lookup (inefficient at scale)
+  - Fixed memory allocation (wasted space or overflow risk)
+  - Unfair ranking systems when participants answer different numbers of
+    questions
+  - No persistent storage between program executions
+
+This project addresses all these limitations through strategic data structure
+selection and algorithm design.
+
+1.3 Objectives
+--------------
+Primary Objectives:
+  1. Implement a dynamic question bank using Linked Lists
+  2. Achieve O(1) average-case player authentication using Hash Tables
+  3. Maintain ordered player records using Binary Search Trees
+  4. Sort leaderboards using self-implemented Merge Sort (no library functions)
+  5. Ensure fair competition through fixed-question sessions and competition
+     ranking (1,2,2,4... style)
+  6. Provide persistent data storage using File I/O
+
+Secondary Objectives:
+  7. Compare algorithmic performance (Bubble Sort vs Quick Sort vs Merge Sort)
+  8. Demonstrate proper memory management (malloc/free, no leaks)
+  9. Implement input validation and error handling
+ 10. Produce human-readable result reports per player
+
+==========================================================================================================
+                        2. DATA STRUCTURES & ALGORITHMS
+==========================================================================================================
+
+The following table maps each project requirement to its corresponding DSA
+solution:
+
++----------------+---------------------------+-------------------------------+
+| Requirement    | Data Structure / Algorithm| Justification                 |
++----------------+---------------------------+-------------------------------+
+| Question Bank  | Singly Linked List        | Dynamic growth without fixed  |
+| (20 questions) |                           | array size; easy insertion    |
++----------------+---------------------------+-------------------------------+
+| Player Auth    | Hash Table (Separate      | O(1) average lookup; handles  |
+| (by Student ID)| Chaining, djb2 hash)      | collisions via linked chains  |
++----------------+---------------------------+-------------------------------+
+| Player Storage | Binary Search Tree        | Ordered by ID; O(log n) search|
+| (ordered)      | (BST)                     | in balanced case; inorder     |
+|                |                           | traversal yields sorted output|
++----------------+---------------------------+-------------------------------+
+| Leaderboard    | Merge Sort (from scratch) | Guaranteed O(n log n); stable;|
+| Ranking        |                           | no library dependencies       |
++----------------+---------------------------+-------------------------------+
+| Performance    | Bubble Sort, Quick Sort   | Empirical comparison of       |
+| Comparison     | (also from scratch)       | O(n²) vs O(n log n) behavior  |
++----------------+---------------------------+-------------------------------+
+| Question Order | Fisher-Yates Shuffle      | O(n) unbiased permutation;    |
+| Randomization  |                           | prevents pattern memorization |
++----------------+---------------------------+-------------------------------+
+| Fair Ranking   | Competition Ranking       | Same score = same rank; next  |
+| (Tie Handling) | (1,2,2,4... style)        | score skips occupied ranks    |
++----------------+---------------------------+-------------------------------+
+| Data Persistence| File I/O (text files)    | Cross-platform; human-readable|
+|                |                           | ; append-only log design      |
++----------------+---------------------------+-------------------------------+
+
+==========================================================================================================
+                        3. SYSTEM ARCHITECTURE
+==========================================================================================================
+
+3.1 High-Level Design
+---------------------
+
+    +-------------------+        +-------------------+        +-------------------+
+    |   CONSOLE UI      |------->|   AUTHENTICATION  |------->|   QUIZ ENGINE     |
+    |   (Menu System)   |        |   (Hash Table)    |        |   (Linked List)   |
+    +-------------------+        +-------------------+        +-------------------+
+            |                              |                            |
+            |                              v                            v
+            |                       +-------------------+        +-------------------+
+            |                       |   PLAYER DB       |        |   SCORING MODULE  |
+            |                       |   (BST + Hash)    |        |   (+1, -0.25)     |
+            |                       +-------------------+        +-------------------+
+            |                              |                            |
+            v                              v                            v
+    +-------------------+        +-------------------+        +-------------------+
+    |   FILE I/O        |<-------|   LEADERBOARD     |<-------|   RESULT GEN      |
+    |   (Persistence)   |        |   (Merge Sort)    |        |   (Report Files)  |
+    +-------------------+        +-------------------+        +-------------------+
+
+3.2 Data Flow
+-------------
+1. Player enters Student ID
+2. Hash Table checks existence in O(1) time
+3. If new: register details, insert into BST + Hash Table (shared node)
+4. Quiz: traverse Linked List of questions (Fisher-Yates shuffled)
+5. Score: +1 correct, -0.25 wrong, 0 skip; clamped at minimum 0
+6. Save: append to log file; rewrite BST inorder to master file
+7. Rank: collect BST nodes → sort by score → apply Competition Ranking
+8. Output: per-player result file + global leaderboard report
+
+3.3 Memory Model
+----------------
+- All Player nodes are heap-allocated via malloc()
+- BST and Hash Table share the SAME malloc'd node (no duplication)
+- Question nodes are linked via next pointers
+- Memory freed on program exit (BST post-order traversal)
+
+==========================================================================================================
+                        4. KEY FEATURES & INNOVATIONS
+==========================================================================================================
+
+4.1 Fair Competition Design
+---------------------------
+- FIXED question count (10 questions for all players)
+- Competition Ranking (1224 style): identical scores receive identical ranks
+- Negative marking discourages random guessing
+- All players face the same maximum possible score
+
+4.2 Multi-Structure Architecture
+--------------------------------
+Unlike simple projects using a single data structure, this system integrates
+THREE structures cooperatively:
+  - Hash Table: instant authentication
+  - BST: ordered persistence and inorder collection
+  - Linked List: dynamic question bank
+
+4.3 Algorithm Performance Visualization
+---------------------------------------
+The leaderboard menu allows users to select:
+  - Bubble Sort (O(n²) baseline)
+  - Quick Sort (O(n log n) average)
+  - Merge Sort (O(n log n) guaranteed, stable)
+
+Each execution displays elapsed time in milliseconds, providing empirical
+evidence of algorithmic complexity differences.
+
+4.4 Comprehensive Reporting
+---------------------------
+- Per-player file: Every question, selected answer, correct answer, status
+- Leaderboard file: Full ranked table with sorting algorithm noted
+- Master database: Append-only log for data integrity
+
+==========================================================================================================
+                        5. TECHNICAL SPECIFICATIONS
+==========================================================================================================
+
+5.1 Development Environment
+---------------------------
+Language        : C (C11 standard)
+Compiler        : GCC (GNU Compiler Collection)
+Platform        : Cross-platform (Linux, macOS, Windows)
+Dependencies    : None (standard library only: stdio, stdlib, string, time)
+
+5.2 File Structure
+------------------
+dsa_trivia_challenge.c   : Single-source implementation (modular design)
+players_scores.txt       : Persistent player database
+leaderboard_report.txt   : Human-readable ranked snapshot
+result_<StudentID>.txt   : Per-player detailed result report
+
+5.3 Constants & Configuration
+-----------------------------
+#define FIXED_QUESTIONS   10      /* All players answer 10 questions */
+#define HASH_SIZE         101     /* Hash table bucket count */
+#define CORRECT_MARK      1.00f   /* Points per correct answer */
+#define WRONG_PENALTY     0.25f   /* Deduction per wrong answer */
+#define MAX_PLAYERS       200     /* Maximum loaded records */
+
+==========================================================================================================
+                        6. EXPECTED OUTCOMES
+==========================================================================================================
+
+6.1 Functional Outcomes
+------------------------
+  [✓] New player registration with duplicate ID prevention
+  [✓] 10-question randomized quiz session per player
+  [✓] Real-time score tracking with negative marking
+  [✓] Persistent storage across program restarts
+  [✓] Competition-ranked leaderboard with tie handling
+  [✓] Search player by ID with instant lookup
+  [✓] Three sorting algorithms with performance timing
+
+6.2 Learning Outcomes
+---------------------
+  - Pointer manipulation and dynamic memory management
+  - Collision resolution in hash tables
+  - Recursive tree operations (insertion, traversal, search)
+  - Divide-and-conquer sorting implementation
+  - File I/O for data persistence
+  - Algorithm complexity analysis (theoretical vs empirical)
+
+==========================================================================================================
+                        7. PROJECT TIMELINE
+==========================================================================================================
+
+| Phase                        | Time   | Activities                                               |
+|------------------------------|--------|----------------------------------------------------------|
+| Phase 1: Design              | Week 1 | Requirement analysis, DSA selection, architecture design |
+| Phase 2: Core Implementation | Week 2 | Linked List, BST, Hash Table implementation              |
+| Phase 3: Integration         | Week 3 | Quiz engine, scoring, file I/O, menu system              |
+| Phase 4: Testing             | Week 4 | Unit testing, memory leak check (valgrind), bug fixes    |
+| Phase 5: Documentation       | Week 5 | Code comments, user manual, project report               |
+| Phase 6: Presentation        | Week 6 | Demo preparation, viva practice                          |
+
+==========================================================================================================
+                        8. SCOPE & LIMITATIONS
+==========================================================================================================
+
+8.1 Current Scope
+-----------------
+- Console-based user interface (text mode)
+- Single-machine execution (no networking)
+- Fixed question bank (hardcoded, extensible to file-based)
+- Single-attempt per player (enforced by ID check)
+
+8.2 Future Enhancements
+-----------------------
+- External question file loading (CSV/TXT format)
+- Difficulty levels (Easy/Medium/Hard question pools)
+- Graph-based question recommendation (prerequisite system)
+- Heap-based priority queue for timed questions
+- GUI implementation using GTK or ncurses
+- Network multiplayer using socket programming
+
+==========================================================================================================
+                        9. CONCLUSION
+==========================================================================================================
+
+This project demonstrates the practical synergy of multiple data structures
+working cooperatively to solve real-world problems. By combining Hash Tables
+for speed, Binary Search Trees for order, and Linked Lists for flexibility,
+the system achieves both efficiency and correctness. The self-implemented
+sorting algorithms and competition ranking system further showcase deep
+understanding of algorithmic design principles beyond standard library usage.
+
+The DSA Trivia Challenge is not merely a quiz game—it is a miniature database
+management system with authentication, indexing, sorting, and persistence,
+implemented from fundamental principles in standard C.
+
+==========================================================================================================
+                        END OF PROJECT IDEA
+==========================================================================================================
