@@ -276,8 +276,8 @@ The decoder recognizes 7–8 digit numeric IDs in the layout **`YY-S-0-SERIAL`**
   │  │  │  │  └──┴──┴─ SERIAL   = 800
   │  │  │  └────────── divider  = 0 (fixed)
   │  │  └───────────── semester = 2  (1 = Spring, 2 = Fall)
-  │  └──────────────── year    = 25 → 2025
-  └─────────────────── batch   = "252" (first 3 digits)
+  │  └──────────────── year     = 25 → 2025
+  └─────────────────── batch    = "252" (first 3 digits)
 
   → "Admission Year: 2025 | Batch: 252 | Serial: 800"
 ```
@@ -338,7 +338,7 @@ IDs that don't match this shape are accepted as free-form IDs (batch entered man
 
 **Ashraful Islam**
 - 🎓 University of Brahmanbaria
-- 🔗 GitHub: [@ashraful1625](https://github.com/ashraful1620)
+- 🔗 GitHub: [@ashraful1625](https://github.com/ashraful1625)
 - 📦 Repository: [github.com/ashraful1625/DSA_Trivia](https://github.com/ashraful1625/DSA_Trivia)
 
 ---
