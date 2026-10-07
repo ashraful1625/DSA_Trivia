@@ -168,7 +168,7 @@ dsa_trivia_main_v8.exe
 
 ### Quiz Flow
 
-1. Enter your **Student ID** (e.g. `2520853`)
+1. Enter your **Student ID** (e.g. `2520800`)
 2. The **ID decoder** auto-fills your batch if the format matches
 3. Confirm your name & department
 4. Answer 10 questions — type `1–4` or `0` to skip
