@@ -1,8 +1,8 @@
 # DSA TRIVIA CHALLENGE
-## Professional Software Design & Architecture Document
+## Software Design & Architecture Document
 
 **Institution:** University of Brahmanbaria  
-**Project:** DSA Trivia Challenge — Merged Edition  
+**Project:** DSA Trivia Challenge  
 **Implementation:** C11 / Console Application  
 **Source basis:** `DSA_TRIVIA.c`
 
@@ -61,7 +61,6 @@ flowchart LR
     FILES --> IO
 ```
 
-![System Architecture](dsa_trivia_design_assets/01_system_architecture.png)
 
 ---
 
@@ -109,7 +108,7 @@ The `Player` structure intentionally serves two indexes at once. One allocation 
 | Player                                      |
 +---------------------------------------------+
 | name / id / batch / dept                    |
-| total / attempted / correct / wrong / skip |
+| total / attempted / correct / wrong / skip  |
 | raw_score / accuracy / ranking_score / rank |
 | left / right                                |
 | hash_next                                   |
@@ -140,8 +139,6 @@ flowchart TB
     P1 -. same allocation .-> HT
 ```
 
-![Data Structures](dsa_trivia_design_assets/02_data_structures.png)
-
 ---
 
 ## 7. Quiz Session Design
@@ -155,8 +152,6 @@ flowchart TB
 7. Exactly 10 questions are selected.
 8. Each answer is classified as correct, wrong, or skipped.
 9. Scores are finalized and the player record is stored or updated.
-
-![Quiz Flow](dsa_trivia_design_assets/03_quiz_flow.png)
 
 ```mermaid
 flowchart TD
@@ -208,8 +203,6 @@ The leaderboard collects BST records into a `Player*` array and lets the user ch
 2. Accuracy — descending
 3. Raw score — descending
 4. Student ID — ascending
-
-![Leaderboard Flow](dsa_trivia_design_assets/04_leaderboard_flow.png)
 
 ```mermaid
 flowchart LR
@@ -348,8 +341,8 @@ This preserves the current algorithms while improving maintainability, testing, 
 ## 16. Build & Execution
 
 ```bash
-gcc -Wall -Wextra -std=c11 dsa_trivia_merged.c -o dsa_trivia_merged
-./dsa_trivia_merged
+gcc -Wall -Wextra -std=c11 dsa_trivia.c -o dsa_trivia
+./dsa_trivia
 ```
 
 ---
